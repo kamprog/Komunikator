@@ -38,7 +38,7 @@ void WatekStatusu::sloZmianaStatusu(Wiadomosc* wiadomosc) {
             auto uzytkownikAdresat = this->socketyUzytkownikow->find(*itadresat);
             if(uzytkownikAdresat != this->socketyUzytkownikow->end()) //znalazłem
             {
-                ((Uzytkownik*)(*uzytkownikAdresat))->getSocket()->write(wiadomosc->Szyfruj(((Uzytkownik*)(*uzytkownikAdresat))->getAES()).toUtf8());
+                ((Uzytkownik*)(*uzytkownikAdresat))->getSocket()->write(*wiadomosc->Szyfruj(((Uzytkownik*)(*uzytkownikAdresat))->getAES()));
             }
         odblokujSockety();
     }

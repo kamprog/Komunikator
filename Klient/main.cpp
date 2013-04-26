@@ -3,6 +3,10 @@
 #include <QTextCodec>
 #include "oknonowegokontaktu.h"
 #include "oknologowania.h"
+#include "../szyfrowanie.h"
+#include "../aes.h"
+#include "../rsa.h"
+#include <QByteArray>
 #include <QTimer>
 
 int main(int argc, char *argv[])
@@ -15,4 +19,5 @@ int main(int argc, char *argv[])
     QTimer::singleShot(0, &w, SLOT(sloZaloguj()));
     
     return a.exec();
+
 }

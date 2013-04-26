@@ -24,7 +24,16 @@ SOURCES += main.cpp \
     watekrozmowy.cpp \
     watekstatusu.cpp \
     ../szyfrator.cpp \
-    infouser.cpp
+    infouser.cpp \
+    ../klucz.cpp \
+    ../szyfrowanie.cpp \
+    ../aes.cpp \
+    ../rsa.cpp \
+    ../cezar.cpp \
+    ../konfiguracjaszyfrowania.cpp \
+    ../polaczenie.cpp \
+    ../polaczenietcp.cpp \
+    ../konfiguracjapolaczenia.cpp
 
 HEADERS += \
     watekglowny.h \
@@ -37,4 +46,16 @@ HEADERS += \
     watekrozmowy.h \
     watekstatusu.h \
     ../szyfrator.h \
-    infouser.h
+    infouser.h \
+    ../TypKlucza.h \
+    ../klucz.h \
+    ../TypSzyfrowania.h \
+    ../szyfrowanie.h \
+    ../aes.h \
+    ../rsa.h \
+    ../cezar.h \
+    ../konfiguracjaszyfrowania.h \
+    ../TypPolaczenia.h \
+    ../polaczenie.h \
+    ../polaczenietcp.h \
+    ../konfiguracjapolaczenia.h

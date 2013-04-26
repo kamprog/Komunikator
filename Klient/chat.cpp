@@ -51,7 +51,7 @@ Chat::Chat(QWidget *parent) : QMainWindow(parent), ui(new Ui::Chat)
 
     connect(this, SIGNAL(wyloguj()), this, SLOT(sloWyloguj()));
 
-    this->listener = new Listener(this->socket, this->kluczAes, this->kluczKlient, this->mutexSocket);
+    this->listener = new Listener(this->socket, this->kluczKlient, this->kluczAes, this->mutexSocket);
     connect(this->socket, SIGNAL(readyRead()), this->listener, SLOT(sloOdbierzWiedomosc()));
     connect(this->listener, SIGNAL(sigNowaWiadomoscKonferencja(Wiadomosc*)), this, SLOT(sloOdbiorWiadomosciKonferencji(Wiadomosc*)));
 }
@@ -118,7 +118,7 @@ void Chat::sloZaloguj()
 
         Wiadomosc wiadomosc(this->profil->getID(), tresc, TypWiadomosci(logowanie));
 
-        this->socket->write(wiadomosc.Szyfruj(this->kluczServer).toUtf8());
+        this->socket->write(*wiadomosc.Szyfruj(this->kluczServer));
 
         QSqlDatabase bazaDanych = QSqlDatabase::addDatabase("QSQLITE");
         bazaDanych.setDatabaseName(this->nazwaBazyDanych);
@@ -267,7 +267,7 @@ void Chat::sloUsunKontakt()
 void Chat::sloWyslijWiadomosc(Wiadomosc* wiadomosc)
 {
     this->mutexSocket->lock();
-    this->socket->write(wiadomosc->Szyfruj(this->kluczAes).toUtf8());
+    this->socket->write(*wiadomosc->Szyfruj(this->kluczAes));
     this->mutexSocket->unlock();
     //qDebug() << wiadomosc->Szyfruj(this->kluczAes);
 

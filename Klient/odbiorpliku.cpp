@@ -1,6 +1,6 @@
 #include "odbiorpliku.h"
 
-OdbiorPliku::OdbiorPliku(quint32 IP, quint16 port, DES_cblock* klucz, QString* nazwaPliku)
+OdbiorPliku::OdbiorPliku(quint32 IP, quint16 port, Klucz* klucz, QString* nazwaPliku)
 {
     this->IP = IP;
     this->port = port;
@@ -27,6 +27,6 @@ void OdbiorPliku::Run() {
             this->exit();
         }
         QByteArray dane = this->socket.readAll();
-        plik.write(Szyfrator::deszyfruj(&dane, this->klucz).toUtf8());
+        plik.write(KonfiguracjaSzyfrowania::getSyfrSymetryczny()->Deszyfruj(this->klucz, &dane)->toUtf8());
     }
 }

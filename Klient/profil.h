@@ -11,6 +11,7 @@
 #include "../wiadomosc.h"
 #include "kontakt.h"
 #include "../szyfrator.h"
+#include "../klucz.h"
 #include <QDebug>
 
 class Profil {

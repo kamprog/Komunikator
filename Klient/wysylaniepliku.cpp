@@ -1,6 +1,6 @@
 #include "wysylaniepliku.h"
 
-void WysylaniePliku::OdbiorPliku(QString IP, quint16 port, DES_cblock *klucz, QString *nazwaPliku)
+void WysylaniePliku::OdbiorPliku(QString IP, quint16 port, Klucz *klucz, QString *nazwaPliku)
 {
     this->IP = IP;
     this->port = port;

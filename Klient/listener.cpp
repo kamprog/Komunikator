@@ -1,10 +1,10 @@
 #include "listener.h"
 
-Listener::Listener(QTcpSocket* socket, QString* ctx, int* rsaKlient, QMutex* mutex) {
+Listener::Listener(QTcpSocket* socket, Klucz* rsaKlient, Klucz* kluczSymetryczny, QMutex* mutex) {
     this->socket = socket;
-    this->ctx = ctx;
     this->rsaKlient = rsaKlient;
     this->mutexSocket = mutex;
+    this->kluczSymetryczny = kluczSymetryczny;
 }
 
 void Listener::sloOdbierzWiedomosc() {
@@ -16,8 +16,8 @@ void Listener::sloOdbierzWiedomosc() {
 
     wiadomosc = new Wiadomosc();
     tresc= new QString(dane);
-
-    wiadomosc->Deszyfruj(tresc, this->ctx);
+    qDebug() << tresc;
+    wiadomosc->Deszyfruj(&dane, this->kluczSymetryczny);
 
     if(wiadomosc->getTyp() == TypWiadomosci(tekstRozmowa))
     {

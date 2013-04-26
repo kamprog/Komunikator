@@ -3,9 +3,8 @@
 
 #include <QString>
 #include "TypWiadomosci.h"
-
-#include "openssl/aes.h"
-#include "openssl/bn.h"
+#include "../klucz.h"
+#include "../konfiguracjaszyfrowania.h"
 #include <QDebug>
 #include <QListIterator>
 #include <QStringList>
@@ -39,15 +38,15 @@ class Wiadomosc {
         TypWiadomosci getTyp();
 
 
-        QString Szyfruj(QString *e);
+        //QString Szyfruj(QString *e);
 
 
 
-        QString Szyfruj(int *klucz);
+        QByteArray* Szyfruj(Klucz *klucz);
 
-        void Deszyfruj(QString* tresc,  QString *e);
+        //void Deszyfruj(QString* tresc,  QString *e);
 
-        void Deszyfruj(QString* tresc, int *klucz);
+        void Deszyfruj(QByteArray* tresc, Klucz *klucz);
     };
 
 #endif // WIADOMOSC_H

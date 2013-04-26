@@ -6,6 +6,7 @@
 #include <QtSql/QSqlQuery>
 #include <QtSql/QSqlError>
 #include "../szyfrator.h"
+#include "../konfiguracjaszyfrowania.h"
 
 namespace Ui {
 class OknoNowegoProfilu;

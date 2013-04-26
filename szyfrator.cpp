@@ -15,7 +15,7 @@ QString Szyfrator::deszyfruj(QString tekst, QString &klucz)
     return tekst;
 }
 
-QString Szyfrator::deszyfruj(QByteArray* dane, DES_cblock *klucz)
+QString Szyfrator::deszyfruj(QByteArray* dane, QString *klucz)
 {
     return "dane";
 }

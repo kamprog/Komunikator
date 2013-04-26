@@ -37,7 +37,7 @@ void WatekRozmowy::sloOdbierzWiadomosc(Wiadomosc* wiadomosc) {
         if(it != this->socketyUzytkownikow->end())
         {
             Uzytkownik* uzytkownik  = *it;
-            uzytkownik->getSocket()->write(wiadomosc->Szyfruj(uzytkownik->getAES()).toUtf8());
+            uzytkownik->getSocket()->write(*wiadomosc->Szyfruj(uzytkownik->getAES()));
             uzytkownik->getSocket()->waitForBytesWritten();
         }
     odblokujSockety();
@@ -52,7 +52,7 @@ void WatekRozmowy::sloOdbierzWiadomoscKonferencja(Wiadomosc* wiadomosc) {
             {
                 qDebug() << "wysylam";
                 Uzytkownik* uzytkownik  = *it;
-                uzytkownik->getSocket()->write(wiadomosc->Szyfruj(uzytkownik->getAES()).toUtf8());
+                uzytkownik->getSocket()->write(*wiadomosc->Szyfruj(uzytkownik->getAES()));
                 uzytkownik->getSocket()->waitForBytesWritten();
             }
         odblokujSockety();

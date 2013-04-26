@@ -35,10 +35,10 @@ class WatekGlowny : public QTcpServer {
         Listener *listener;
         WatekRozmowy* watekRozmowy;
         WatekStatusu* watekStatusu;
-        int* kluczSerwra;
+        Klucz* kluczSerwra;
         QSignalMapper* signalMapperOdbieranie;
         QSignalMapper* signalMapperOdlaczanie;
-        QString * kluczDoBazy;
+        Klucz * kluczDoBazy;
 
         void zablokujSockety();
         void odblokujSockety();

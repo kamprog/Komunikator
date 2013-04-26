@@ -26,7 +26,7 @@ void Listener::odblokujSockety()
     mutCzytelnik.release();
 }
 
-Listener::Listener(DES_cblock *kluczSerwera, QMap<int, Uzytkownik *> *socketyUzytkownikow) {
+Listener::Listener(Klucz *kluczSerwera, QMap<int, Uzytkownik *> *socketyUzytkownikow) {
     this->kluczSerwera = kluczSerwera;
     this->socketyUzytkownikow = socketyUzytkownikow;
 }
@@ -41,9 +41,9 @@ void Listener::sloOdbierzWiadomosc()
     zablokujSockety();
         QString tresc = socket->readAll();
         int identyfikator = tresc.left(tresc.indexOf(char(18))).toInt();
+        qDebug() << this->socketyUzytkownikow->count();
         uzytkownik =  *this->socketyUzytkownikow->find(identyfikator);
-
-        wiadomosc->Deszyfruj(&tresc, uzytkownik->getAES());
+        wiadomosc->Deszyfruj(&tresc.toUtf8(), uzytkownik->getAES());
     odblokujSockety();
 
     Wiadomosc* wiadomoscDoWyslania;

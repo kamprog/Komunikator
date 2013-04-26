@@ -5,21 +5,18 @@
 #include <QMutex>
 #include <QTcpSocket>
 #include "../wiadomosc.h"
-#include "../openssl/des.h"
-#include "../openssl/evp.h"
-#include "../openssl/aes.h"
-#include "../openssl/bn.h"
 
 #include <QHostAddress>
 #include "../szyfrator.h"
 #include "../typwiadomosci.h"
+#include "../klucz.h"
 
 class Listener : public QObject{
 
 Q_OBJECT
 
 public:
-    Listener(QTcpSocket *socket = nullptr, QString *ctx = nullptr, int *rsaKlient = nullptr, QMutex *mutex = nullptr);
+    Listener(QTcpSocket *socket = nullptr, Klucz* rsaKlient = nullptr, Klucz* kluczSymetryczny = nullptr, QMutex *mutex = nullptr);
 
 public slots:
     void sloOdbierzWiedomosc();
@@ -37,8 +34,8 @@ signals:
 
 private:
     QTcpSocket *socket;
-    QString * ctx;
-    int *rsaKlient;
+    Klucz *rsaKlient;
+    Klucz *kluczSymetryczny;
     QMutex* mutexSocket;
 };
 

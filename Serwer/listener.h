@@ -7,6 +7,7 @@
 #include "../wiadomosc.h"
 #include <QHostAddress>
 #include <../typwiadomosci.h>
+#include "../klucz.h"
 #include <QSemaphore>
 #include <QObject>
 #include <QThread>
@@ -17,14 +18,14 @@ class Listener : public QThread{
 
 private:
 
-    DES_cblock* kluczSerwera;
+    Klucz* kluczSerwera;
     QMap<int, Uzytkownik*>* socketyUzytkownikow;
 
     void zablokujSockety();
     void odblokujSockety();
 
 public:
-    Listener(DES_cblock* kluczSerwera, QMap<int, Uzytkownik*>* socketyUzytkownikow);
+    Listener(Klucz* kluczSerwera, QMap<int, Uzytkownik*>* socketyUzytkownikow);
 
     Uzytkownik* WyszukanieUzytkownika(int ID);
 

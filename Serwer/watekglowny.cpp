@@ -60,7 +60,8 @@ void WatekGlowny::incomingConnection(int handle)
     Wiadomosc wiadomosc;
 
     socket->waitForReadyRead();
-    wiadomosc.Deszyfruj(&QString(socket->readAll()), this->kluczSerwra);
+    wiadomosc.Deszyfruj(&socket->readAll(), this->kluczSerwra);
+
 
     zablokujSockety();
         this->socketyUzytkownikow->insert(wiadomosc.getNadawca(), new Uzytkownik(socket, wiadomosc.getNadawca()));
@@ -83,7 +84,7 @@ int WatekGlowny::randInt(int dolny, int gorny){
 }
 
 void WatekGlowny::GenerujAES(Uzytkownik* uzytkownik) {
-    uzytkownik->setAES(new QString("KLUCZ"));
+    uzytkownik->setAES(KonfiguracjaSzyfrowania::getSyfrSymetryczny()->getKlucz());
 
 }
 
@@ -110,7 +111,7 @@ void WatekGlowny::WyslijOczekujace(int ID)
     while(zapytanie.next())
     {
         wiadomosc = new Wiadomosc();
-        wiadomosc->Deszyfruj(&zapytanie.value(0).toString(), this->kluczDoBazy);
+        wiadomosc->Deszyfruj(&zapytanie.value(0).toString().toUtf8(), this->kluczDoBazy);
         emit(sigZBazy(wiadomosc));
     }
 
@@ -131,7 +132,7 @@ void WatekGlowny::sloWiadomoscDoBazy(Wiadomosc* wiadomosc) {
 
     zapytanie.prepare("insert into wiadomosci (idOdbiorcy, tresc) values (:id, :tresc)");
     zapytanie.bindValue(":id", wiadomosc->getAdresat()->at(0));
-    zapytanie.bindValue(":tresc", wiadomosc->Szyfruj(this->kluczDoBazy));
+    zapytanie.bindValue(":tresc", *wiadomosc->Szyfruj(this->kluczDoBazy));
     zapytanie.exec();
     this->bazaOczekujacych.close();
     delete wiadomosc;

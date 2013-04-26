@@ -92,7 +92,7 @@ TypWiadomosci Wiadomosc::getTyp()
     return this->typ;
 }
 
-QString Wiadomosc::Szyfruj(QString *e)
+/*QString Wiadomosc::Szyfruj(QString *e)
 {
     QString tresc = "";
 
@@ -116,9 +116,9 @@ QString Wiadomosc::Szyfruj(QString *e)
     return tresc;
 
 
-}
+}*/
 
-QString Wiadomosc::Szyfruj(int* klucz)
+QByteArray* Wiadomosc::Szyfruj(Klucz* klucz)
 {
     QString tresc = "";
 
@@ -139,10 +139,10 @@ QString Wiadomosc::Szyfruj(int* klucz)
     tresc[tresc.length()-1] = char(18);
 
     tresc += QString::number(this->typ) += char(0);
-    return tresc;
+    return KonfiguracjaSzyfrowania::getSyfrSymetryczny()->Szyfruj(klucz, &tresc);
 }
 
-void Wiadomosc::Deszyfruj(QString* tresc,  QString *e)
+/*void Wiadomosc::Deszyfruj(QString* tresc,  QString *e)
 {
     clear();
     QStringList listaSekcji = tresc->split(char(18));
@@ -161,10 +161,12 @@ void Wiadomosc::Deszyfruj(QString* tresc,  QString *e)
 
     this->typ = (TypWiadomosci)listaSekcji[4].toInt();
 
-}
+}*/
 
-void Wiadomosc::Deszyfruj(QString* tresc, int* klucz)
+void Wiadomosc::Deszyfruj(QByteArray* tr, Klucz* klucz)
 {
+    qDebug() << *tr;
+    QString* tresc = KonfiguracjaSzyfrowania::getSyfrSymetryczny()->Deszyfruj(klucz, tr);
     clear();
     QStringList listaSekcji = tresc->split(char(18));
 

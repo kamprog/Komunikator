@@ -3,8 +3,6 @@
 
 #include <QLinkedList>
 #include <QMutex>
-//#include "../openssl/aes.h"
-//#include "../openssl/evp.h"
 #include "../wiadomosc.h"
 #include <QSemaphore>
 #include "uzytkownik.h"

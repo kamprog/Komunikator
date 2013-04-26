@@ -3,10 +3,9 @@
 
 #include <QTcpSocket>
 #include <QLinkedList>
-#include "../openssl/bn.h"
-#include "../openssl/des.h"
 #include <QMutex>
 #include "../wiadomosc.h"
+#include "../klucz.h"
 #include <QObject>
 
 
@@ -16,20 +15,20 @@ class Uzytkownik : public QObject{
         int ID;
         QTcpSocket* socket;
         QLinkedList<Wiadomosc*>* kolejkaWiadomosci;
-        int* kluczRSA;
-        QString* kluczSymetryczny;
-        QString* kluczSymetrycznyPliku;
+        Klucz* kluczRSA;
+        Klucz* kluczSymetryczny;
+        Klucz* kluczSymetrycznyPliku;
         QMutex* mutex;
 
     public:
         Uzytkownik(QTcpSocket* socket, int ID = 0);
         ~Uzytkownik();
 
-        void setKluczRSA(int *kluczRSA);
+        void setKluczRSA(Klucz *kluczRSA);
 
-        void setAES(QString * kluczDES);
+        void setAES(Klucz * kluczDES);
 
-        void setDESPliku(QString *DESPliku);
+        void setDESPliku(Klucz *DESPliku);
 
         int getID();
 
@@ -37,11 +36,11 @@ class Uzytkownik : public QObject{
 
         QLinkedList<Wiadomosc*>* getKolejka();
 
-        int *getRSA();
+        Klucz *getRSA();
 
-        QString* getAES();
+        Klucz* getAES();
 
-        QString* getDESPliku();
+        Klucz* getDESPliku();
 
         void setKolejka(QLinkedList<Wiadomosc*>* kolejka);
 

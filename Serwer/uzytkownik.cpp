@@ -4,7 +4,8 @@
 Uzytkownik::Uzytkownik(QTcpSocket* socket, int ID) {
     this->ID = ID;
     this->socket = socket;
-    this->kluczSymetryczny = new QString("KLUCZ");
+    this->kluczSymetryczny = KonfiguracjaSzyfrowania::getSyfrSymetryczny()->getKlucz();
+
 }
 
 Uzytkownik::~Uzytkownik()
@@ -17,15 +18,16 @@ Uzytkownik::~Uzytkownik()
     delete mutex;
 }
 
-void Uzytkownik::setKluczRSA(int* kluczRSA) {
+void Uzytkownik::setKluczRSA(Klucz* kluczRSA) {
     this->kluczRSA = kluczRSA;
 }
 
-void Uzytkownik::setAES(QString* kluczDES) {
+void Uzytkownik::setAES(Klucz* kluczDES) {
+    qDebug() << "dupa";
     this->kluczSymetryczny = kluczDES;
 }
 
-void Uzytkownik::setDESPliku(QString* DESPliku) {
+void Uzytkownik::setDESPliku(Klucz* DESPliku) {
    this->kluczSymetrycznyPliku = DESPliku;
 }
 
@@ -41,15 +43,16 @@ QLinkedList<Wiadomosc*>* Uzytkownik::getKolejka() {
     return kolejkaWiadomosci;
 }
 
-int* Uzytkownik::getRSA() {
+Klucz* Uzytkownik::getRSA() {
    return this->kluczRSA;
 }
 
-QString* Uzytkownik::getAES() {
+Klucz* Uzytkownik::getAES() {
+    qDebug() << kluczSymetryczny;
     return kluczSymetryczny;
 }
 
-QString* Uzytkownik::getDESPliku() {
+Klucz* Uzytkownik::getDESPliku() {
     return kluczSymetrycznyPliku;
 }
 

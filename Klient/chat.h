@@ -8,20 +8,17 @@
 #include <QtSql/QSqlError>
 #include <QtNetwork/QTcpSocket>
 #include <QtNetwork/QHostAddress>
-#include "../openssl/aes.h"
-#include "../openssl/evp.h"
 #include "../wiadomosc.h"
+#include "../konfiguracjaszyfrowania.h"
 #include "profil.h"
 #include "../status.h"
-#include "../openssl/des.h"
-#include "../openssl/des.h"
-#include "../openssl/bn.h"
 #include "oknonowegokontaktu.h"
 #include "oknotytulukonferencji.h"
 #include "oknowyborukonferencji.h"
 #include "oknologowania.h"
 #include "oknorozmowy.h"
 #include "oknokonferencji.h"
+#include "../klucz.h"
 #include <QMessageBox>
 #include <QTimer>
 #include <QMenu>
@@ -78,12 +75,12 @@ signals:
 private:
     Ui::Chat *ui;
     QString nazwaBazyDanych;
-    QString* kluczAes;
-    int* kluczServer;
-    int* kluczKlient;
+    Klucz* kluczAes;
+    Klucz* kluczServer;
+    Klucz* kluczKlient;
     QTcpSocket* socket;
     QTcpSocket socketPlik;
-    QString* kluczPliku;
+    Klucz* kluczPliku;
     Profil* profil;
     OknoNowegoKontaktu* oknoNowegoKontaktu;
     OknoTytuluKonferencji* oknoNowejKonferencji;

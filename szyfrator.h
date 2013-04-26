@@ -2,7 +2,7 @@
 #define SZYFRATOR_H
 
 #include <QString>
-#include "openssl/des.h"
+#include "../klucz.h"
 
 class Szyfrator
 {
@@ -10,7 +10,7 @@ public:
     Szyfrator();
     static QString szyfruj(QString tekst, QString& klucz);
     static QString deszyfruj(QString tekst, QString& klucz);
-    static QString deszyfruj(QByteArray *dane, DES_cblock *klucz);
+    static QString deszyfruj(QByteArray *dane, QString *klucz);
 
 };
 

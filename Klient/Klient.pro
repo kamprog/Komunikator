@@ -31,7 +31,18 @@ SOURCES += main.cpp\
     wysylaniepliku.cpp \
     ../wiadomosc.cpp \
     oknowyborukonferencji.cpp \
-    ../szyfrator.cpp
+    ../szyfrator.cpp \
+    ../wiadomosc.cpp \
+    ../szyfrowanie.cpp \
+    ../szyfrator.cpp \
+    ../rsa.cpp \
+    ../polaczenietcp.cpp \
+    ../polaczenie.cpp \
+    ../konfiguracjaszyfrowania.cpp \
+    ../konfiguracjapolaczenia.cpp \
+    ../klucz.cpp \
+    ../cezar.cpp \
+    ../aes.cpp
 
 HEADERS  += chat.h \
     profil.h \
@@ -52,7 +63,23 @@ HEADERS  += chat.h \
     ../status.h \
     szyfrator.h \
     oknowyborukonferencji.h \
-    ../szyfrator.h
+    ../szyfrator.h \
+    ../wiadomosc.h \
+    ../typwiadomosci.h \
+    ../TypSzyfrowania.h \
+    ../TypPolaczenia.h \
+    ../TypKlucza.h \
+    ../szyfrowanie.h \
+    ../szyfrator.h \
+    ../status.h \
+    ../rsa.h \
+    ../polaczenietcp.h \
+    ../polaczenie.h \
+    ../konfiguracjaszyfrowania.h \
+    ../konfiguracjapolaczenia.h \
+    ../klucz.h \
+    ../cezar.h \
+    ../aes.h
 
 FORMS    += chat.ui \
     oknonowegoprofilu.ui \
