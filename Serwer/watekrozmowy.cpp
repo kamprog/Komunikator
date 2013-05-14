@@ -37,7 +37,9 @@ void WatekRozmowy::sloOdbierzWiadomosc(Wiadomosc* wiadomosc) {
         if(it != this->socketyUzytkownikow->end())
         {
             Uzytkownik* uzytkownik  = *it;
-            uzytkownik->getSocket()->write(*wiadomosc->Szyfruj(uzytkownik->getAES()));
+            Klucz* k = KonfiguracjaSzyfrowania::getSyfrSymetryczny()->getKlucz();
+
+            uzytkownik->getSocket()->write(*KonfiguracjaSzyfrowania::getSyfrSymetryczny()->Szyfruj(k, wiadomosc->getSerializeTresc()));
             uzytkownik->getSocket()->waitForBytesWritten();
         }
     odblokujSockety();
@@ -50,7 +52,6 @@ void WatekRozmowy::sloOdbierzWiadomoscKonferencja(Wiadomosc* wiadomosc) {
         QMap<int, Uzytkownik*>::Iterator it = this->socketyUzytkownikow->find(*itAdresat);
             if(it != this->socketyUzytkownikow->end())
             {
-                qDebug() << "wysylam";
                 Uzytkownik* uzytkownik  = *it;
                 uzytkownik->getSocket()->write(*wiadomosc->Szyfruj(uzytkownik->getAES()));
                 uzytkownik->getSocket()->waitForBytesWritten();

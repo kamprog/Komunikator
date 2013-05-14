@@ -23,7 +23,7 @@ public:
     void closeEvent(QCloseEvent *event);
     
 signals:
-    void sigWysylanieWiadomosci(Wiadomosc*);
+    void sigWysylanieWiadomosci(QByteArray*);
     void sigZamkniecie(QString* nazwa);
 
 public slots:

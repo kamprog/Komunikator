@@ -19,7 +19,7 @@ public:
     Listener(QTcpSocket *socket = nullptr, Klucz* rsaKlient = nullptr, Klucz* kluczSymetryczny = nullptr, QMutex *mutex = nullptr);
 
 public slots:
-    void sloOdbierzWiedomosc();
+    void sloOdbierzWiedomosc(QByteArray* dane);
 
 signals:
     void sigNowaWiadomoscRozmowa(Wiadomosc*);

@@ -14,6 +14,7 @@ public:
     static void setSzyfrNiesymetryczny(TypSzyforwania typ);
     static Szyfrowanie* getSyfrNiesymetryczny();
     static Szyfrowanie* getSyfrSymetryczny();
+    static Klucz* kluczSymetryczny;
 private:
     static TypSzyforwania SzyfrSymetryczny;
     static TypSzyforwania SzyfrNiesymetryczny;

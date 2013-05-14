@@ -10,6 +10,7 @@
 #include <QTextBrowser>
 #include <QShortcut>
 #include "../typwiadomosci.h"
+#include "../konfiguracjaszyfrowania.h"
 
 namespace Ui {
 class OknoRozmowy;
@@ -41,7 +42,7 @@ public:
     void RozpoczecieRozmowy(int ID, QString nick);
     
 signals:
-    void sigWysylanieWiadomosci(Wiadomosc* wiadomosc);
+    void sigWysylanieWiadomosci(QByteArray* wiadomosc);
 
 public slots:
     void sloOdbiorWiadomosci(Wiadomosc* wiadomosc);

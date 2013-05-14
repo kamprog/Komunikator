@@ -33,7 +33,7 @@ class Wiadomosc {
         int getNadawca();
 
         QList<QString>* getTresc();
-        QString getSerializeTresc();
+        QString *getSerializeTresc();
 
         TypWiadomosci getTyp();
 

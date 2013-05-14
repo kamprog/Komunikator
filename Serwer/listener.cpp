@@ -41,7 +41,6 @@ void Listener::sloOdbierzWiadomosc()
     zablokujSockety();
         QString tresc = socket->readAll();
         int identyfikator = tresc.left(tresc.indexOf(char(18))).toInt();
-        qDebug() << this->socketyUzytkownikow->count();
         uzytkownik =  *this->socketyUzytkownikow->find(identyfikator);
         wiadomosc->Deszyfruj(&tresc.toUtf8(), uzytkownik->getAES());
     odblokujSockety();

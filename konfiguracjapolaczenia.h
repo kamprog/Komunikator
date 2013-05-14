@@ -4,6 +4,7 @@
 #include "TypPolaczenia.h"
 #include "polaczenie.h"
 #include "polaczenietcp.h"
+#include <QString>
 
 class KonfiguracjaPolaczenia
 {
@@ -12,6 +13,9 @@ public:
     static Polaczenie* getPolaczenie();
 private:
     static TypPolaczenia typ;
+    static QString IP;
+    static quint16 port;
+
 };
 
 #endif // KONFIGURACJAPOLACZENIA_H

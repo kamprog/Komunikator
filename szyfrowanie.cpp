@@ -9,4 +9,9 @@ Szyfrowanie::~Szyfrowanie()
 
 }
 
+Klucz* Szyfrowanie::getKlucz()
+{
+    return this->klucz;
+}
+
 

@@ -7,22 +7,15 @@ Listener::Listener(QTcpSocket* socket, Klucz* rsaKlient, Klucz* kluczSymetryczny
     this->kluczSymetryczny = kluczSymetryczny;
 }
 
-void Listener::sloOdbierzWiedomosc() {
-    QByteArray dane;
+void Listener::sloOdbierzWiedomosc(QByteArray *dane) {
     Wiadomosc* wiadomosc;
-    QString* tresc;
-
-    dane = this->socket->readAll();
 
     wiadomosc = new Wiadomosc();
-    tresc= new QString(dane);
-    qDebug() << tresc;
-    wiadomosc->Deszyfruj(&dane, this->kluczSymetryczny);
+    wiadomosc->Deszyfruj(dane, this->kluczSymetryczny);
 
     if(wiadomosc->getTyp() == TypWiadomosci(tekstRozmowa))
     {
         emit(sigNowaWiadomoscRozmowa(wiadomosc));
-        qDebug() << "rozmowa";
     }
     else if(wiadomosc->getTyp() == TypWiadomosci(tekstKonferencja))
     {

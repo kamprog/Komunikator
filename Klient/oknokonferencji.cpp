@@ -56,13 +56,10 @@ void OknoKonferencji::sloWysylanieWiadomosci()
     wiadomosc->push_back(nazwa);
     wiadomosc->push_back(tresc);
 
-    //DEDUG
-    /*ui->chat->setText(ui->chat->toPlainText() + "DEBUG:\nID: " + QString::number(this->profil->getID()) + "\nTytul: " + wiadomosc->at(0) + "\nTekst: " + wiadomosc->at(1) + "\nLista: ");
-    for(int i = 0; i < lista->count(); ++i)
-        ui->chat->setText(ui->chat->toPlainText() + QString::number(lista->at(i)) + " ");
-    ui->chat->setText(ui->chat->toPlainText() + "\n\n");/**/
+    Wiadomosc w(this->profil->getID(), lista, wiadomosc, TypWiadomosci(tekstKonferencja));
+    Klucz* k = KonfiguracjaSzyfrowania::getSyfrSymetryczny()->getKlucz();
 
-    emit(sigWysylanieWiadomosci(new Wiadomosc(this->profil->getID(), lista, wiadomosc, TypWiadomosci(tekstKonferencja))));
+    emit(sigWysylanieWiadomosci(KonfiguracjaSzyfrowania::getSyfrSymetryczny()->Szyfruj(k, w.getSerializeTresc())));
 }
 
 void OknoKonferencji::DodajUzytkownika(int ID, QString nick)

@@ -10,7 +10,7 @@ Polaczenie* KonfiguracjaPolaczenia::getPolaczenie()
 
     switch (KonfiguracjaPolaczenia::typ) {
     case TypPolaczenia::TCP:
-        return new PolaczenieTCP("localhost", 1234);
+        return new PolaczenieTCP(KonfiguracjaPolaczenia::IP, KonfiguracjaPolaczenia::port);
         break;
     default:
         break;
@@ -18,3 +18,5 @@ Polaczenie* KonfiguracjaPolaczenia::getPolaczenie()
 }
 
 TypPolaczenia KonfiguracjaPolaczenia::typ = TypPolaczenia::TCP;
+QString KonfiguracjaPolaczenia::IP = "localhost";
+quint16 KonfiguracjaPolaczenia::port = 1234;

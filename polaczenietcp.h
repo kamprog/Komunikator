@@ -7,18 +7,24 @@
 
 class PolaczenieTCP: public Polaczenie
 {
+    Q_OBJECT
 public:
     PolaczenieTCP(QString IP, quint16 port);
     ~PolaczenieTCP();
-    void Polacz();
+    bool Polacz();
     void Rozlacz();
-    QString* OdbierzWiadomosc();
+    QByteArray* OdbierzWiadomosc();
     void WyslijWiadomosc();
-    void sloWyslijWiadomosc(QString* wiadomosc);
-    void sigOdebrano(QString* wiadomosc);
+
+public slots:
+    void sloWyslijWiadomosc(QByteArray* wiadomosc);
+protected slots:
+    void sloOdbierzWiadomosc();
 
 private:
-    QTcpSocket socket;
+    QTcpSocket* socket;
+    QString IP;
+    quint16 port;
 };
 
 #endif // POLACZENIETCP_H

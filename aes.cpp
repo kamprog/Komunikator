@@ -7,20 +7,20 @@ AES::~AES(){
 }
 
 QByteArray* AES::Szyfruj(Klucz* klucz, QString* tresc){
+    qDebug()<< "szyfruje AES";
     return new QByteArray(tresc->toUtf8());
 }
 
 QString* AES::Deszyfruj(Klucz* klucz, QByteArray* tresc){
+    qDebug()<< "deszyfruje AES";
     return new QString(*tresc);
 }
 
 Klucz* AES::GenerujKlucz(QByteArray*  klucz){
-    return new Klucz(TypKlucza::symetryczny);
+    this->klucz = new Klucz(TypKlucza::symetryczny);
+    return this->klucz;
 }
 
-Klucz* AES::getKlucz(){
-    return new Klucz(TypKlucza::symetryczny);
-}
 
 AES* AES::instancja()
 {

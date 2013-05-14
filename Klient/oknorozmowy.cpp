@@ -71,7 +71,6 @@ void OknoRozmowy::sloOdbiorWiadomosci(Wiadomosc* wiadomosc)
 
     if(findChild<MyTextBrowser *>(QString::number(wiadomosc->getAdresat()->at(0)).toUtf8()) == nullptr)
     {
-        qDebug() << "nie ma mnie!";
         QString nick;
         QSqlDatabase bazaDanych = QSqlDatabase::addDatabase("QSQLITE");
         bazaDanych.setDatabaseName(this->nazwaBazy);
@@ -116,7 +115,9 @@ void OknoRozmowy::sloWysylanieWiadomosci()
     c.movePosition(QTextCursor::End);
     edytowany->setTextCursor(c);
 
-    emit(sigWysylanieWiadomosci(new Wiadomosc(this->profil->getID(), edytowany->getID(), &tresc, TypWiadomosci(tekstRozmowa))));
+    Wiadomosc* w = new Wiadomosc(this->profil->getID(), edytowany->getID(), &tresc, TypWiadomosci(tekstRozmowa));
+    Klucz* k = KonfiguracjaSzyfrowania::getSyfrSymetryczny()->getKlucz();
+    emit(sigWysylanieWiadomosci(KonfiguracjaSzyfrowania::getSyfrSymetryczny()->Szyfruj(k, w->getSerializeTresc())));
 }
 
 void OknoRozmowy::sloZamknij(int index)

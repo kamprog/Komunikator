@@ -13,7 +13,6 @@ QByteArray* Cezar::Szyfruj(Klucz* Klucz, QString* tresc){
     {
         by->operator [](i) = by->operator [](i) + 1;
     }
-    qDebug() << *by;
     return by;
 }
 
@@ -26,12 +25,10 @@ QString* Cezar::Deszyfruj(Klucz* klucz, QByteArray* tresc){
 }
 
 Klucz* Cezar::GenerujKlucz(QByteArray*  klucz){
-    return new Klucz(TypKlucza::symetryczny);
+    this->klucz = new Klucz(TypKlucza::symetryczny);
+    return this->klucz;
 }
 
-Klucz* Cezar::getKlucz(){
-    return new Klucz(TypKlucza::symetryczny);
-}
 
 Cezar* Cezar::instancja()
 {

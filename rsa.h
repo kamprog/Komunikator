@@ -14,7 +14,6 @@ public:
     QByteArray* Szyfruj(Klucz* Klucz, QString* tresc);
     QString* Deszyfruj(Klucz* klucz, QByteArray* tresc);
     Klucz* GenerujKlucz(QByteArray*  klucz);
-    Klucz* getKlucz();
     static RSA* instancja();
 };
 

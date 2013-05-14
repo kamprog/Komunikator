@@ -30,7 +30,7 @@ WatekGlowny::WatekGlowny()  : QTcpServer() {
     this->bazaOczekujacych = QSqlDatabase::addDatabase("QMYSQL");
     this->bazaOczekujacych.setHostName("localhost");
     this->bazaOczekujacych.setUserName("root");
-    this->bazaOczekujacych.setPassword("root");
+    this->bazaOczekujacych.setPassword("");
     this->bazaOczekujacych.setDatabaseName("serwer");
 
     this->socketyUzytkownikow = new QMap<int, Uzytkownik*>;
@@ -60,8 +60,9 @@ void WatekGlowny::incomingConnection(int handle)
     Wiadomosc wiadomosc;
 
     socket->waitForReadyRead();
-    wiadomosc.Deszyfruj(&socket->readAll(), this->kluczSerwra);
-
+    Klucz* k = KonfiguracjaSzyfrowania::getSyfrSymetryczny()->getKlucz();
+    wiadomosc.Deszyfruj(&socket->readAll(), k);
+    qDebug() << wiadomosc.getNadawca();
 
     zablokujSockety();
         this->socketyUzytkownikow->insert(wiadomosc.getNadawca(), new Uzytkownik(socket, wiadomosc.getNadawca()));
@@ -71,7 +72,6 @@ void WatekGlowny::incomingConnection(int handle)
 
     connect(socket, SIGNAL(readyRead()), this->listener, SLOT(sloOdbierzWiadomosc()));
     connect(socket, SIGNAL(disconnected()), this, SLOT(sloOdlaczenieUzytkownika()));
-
 }
 
 
@@ -134,6 +134,7 @@ void WatekGlowny::sloWiadomoscDoBazy(Wiadomosc* wiadomosc) {
     zapytanie.bindValue(":id", wiadomosc->getAdresat()->at(0));
     zapytanie.bindValue(":tresc", *wiadomosc->Szyfruj(this->kluczDoBazy));
     zapytanie.exec();
+    qDebug() << zapytanie.lastError();
     this->bazaOczekujacych.close();
     delete wiadomosc;
 }
@@ -164,11 +165,9 @@ void WatekGlowny::sloOdlaczenieUzytkownika()
     }
     odblokujSockety();
 
-    qDebug() << "odlaczam";
 
 }
 
 void WatekGlowny::sloFuu(Wiadomosc* wiadmosc)
 {
-    qDebug() << "jebancuchu ty jeden";
 }

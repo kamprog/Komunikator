@@ -21,6 +21,8 @@ Chat::Chat(QWidget *parent) : QMainWindow(parent), ui(new Ui::Chat)
     this->oknoLogowania = new OknoLogowania(this, "komunikator.db");
     this->oknoRozmowy = nullptr;
 
+    this->polaczenie = KonfiguracjaPolaczenia::getPolaczenie();
+
     connect(this->menuKontektowe_kontakty.addAction("Rozpocznij rozmowe"), SIGNAL(triggered()), this, SLOT(sloRozmowa()));
     connect(this->menuKontektowe_kontakty.addAction("Dodaj do konferencji"), SIGNAL(triggered()), this, SLOT(sloDodajDoKonferencji()));
     connect(this->menuKontektowe_kontakty.addAction("Wyślij plik"), SIGNAL(triggered()), this, SLOT(sloWyslijPlik()));
@@ -52,8 +54,8 @@ Chat::Chat(QWidget *parent) : QMainWindow(parent), ui(new Ui::Chat)
     connect(this, SIGNAL(wyloguj()), this, SLOT(sloWyloguj()));
 
     this->listener = new Listener(this->socket, this->kluczKlient, this->kluczAes, this->mutexSocket);
-    connect(this->socket, SIGNAL(readyRead()), this->listener, SLOT(sloOdbierzWiedomosc()));
-    connect(this->listener, SIGNAL(sigNowaWiadomoscKonferencja(Wiadomosc*)), this, SLOT(sloOdbiorWiadomosciKonferencji(Wiadomosc*)));
+    connect(this->polaczenie, SIGNAL(sigOdebrano(QByteArray*)), this->listener, SLOT(sloOdbierzWiedomosc(QByteArray*)));
+    //connect(this->listener, SIGNAL(sigNowaWiadomoscKonferencja(Wiadomosc*)), this, SLOT(sloOdbiorWiadomosciKonferencji(Wiadomosc*)));
 }
 
 Chat::~Chat()
@@ -93,10 +95,16 @@ void Chat::sloZaloguj()
     }
     else {
         // FIXME: najprawdopodpodobniej to tutaj jest ten blad (pojawia sie zazwyczaj jak masz uruchomiony serwer a w tym czasie pzrekompilujesz program klienta)
-        this->socket->connectToHost("localhost", 1234);
+       /* this->socket->connectToHost("localhost", 1234);
         if(!this->socket->waitForConnected(3000))
         {
             QMessageBox::critical(this, "Błąd", socket->errorString());
+            this->profil = this->oknoLogowania->getProfil();
+            emit(this->wyloguj());
+            return;
+        }*/
+        if(!this->polaczenie->Polacz())
+        {
             this->profil = this->oknoLogowania->getProfil();
             emit(this->wyloguj());
             return;
@@ -109,7 +117,7 @@ void Chat::sloZaloguj()
         this->setWindowTitle("Chat - " + QString::number(this->profil->getID()));
 
         this->oknoRozmowy = new OknoRozmowy(this, profil, "komunikator.db");
-        connect(this->oknoRozmowy, SIGNAL(sigWysylanieWiadomosci(Wiadomosc*)), this, SLOT(sloWyslijWiadomosc(Wiadomosc*)));
+        connect(this->oknoRozmowy, SIGNAL(sigWysylanieWiadomosci(QByteArray*)), this->polaczenie, SLOT(sloWyslijWiadomosc(QByteArray*)));
         connect(this->listener, SIGNAL(sigNowaWiadomoscRozmowa(Wiadomosc*)), this->oknoRozmowy, SLOT(sloOdbiorWiadomosci(Wiadomosc*)));
 
         QList<QString>* tresc = new QList<QString>;
@@ -117,8 +125,8 @@ void Chat::sloZaloguj()
         tresc->append(this->oknoLogowania->getHaslo());
 
         Wiadomosc wiadomosc(this->profil->getID(), tresc, TypWiadomosci(logowanie));
-
-        this->socket->write(*wiadomosc.Szyfruj(this->kluczServer));
+        Klucz* k = KonfiguracjaSzyfrowania::getSyfrSymetryczny()->getKlucz();
+        this->polaczenie->sloWyslijWiadomosc(KonfiguracjaSzyfrowania::getSyfrSymetryczny()->Szyfruj(k, wiadomosc.getSerializeTresc()));
 
         QSqlDatabase bazaDanych = QSqlDatabase::addDatabase("QSQLITE");
         bazaDanych.setDatabaseName(this->nazwaBazyDanych);
@@ -266,9 +274,9 @@ void Chat::sloUsunKontakt()
 
 void Chat::sloWyslijWiadomosc(Wiadomosc* wiadomosc)
 {
-    this->mutexSocket->lock();
-    this->socket->write(*wiadomosc->Szyfruj(this->kluczAes));
-    this->mutexSocket->unlock();
+    //this->mutexSocket->lock();
+    //this->socket->write(*wiadomosc->Szyfruj(this->kluczAes));
+    //this->mutexSocket->unlock();
     //qDebug() << wiadomosc->Szyfruj(this->kluczAes);
 
     //FIXME: nie mozemy tego tak usuwac bo leca tutaj wyjatki...
@@ -287,7 +295,6 @@ void Chat::sloNowaKonferencja()
         QSqlDatabase bazaDanych = QSqlDatabase::addDatabase("QSQLITE");
         bazaDanych.setDatabaseName(this->nazwaBazyDanych);
 
-        qDebug() << "dupa0";
         bazaDanych.open();
         {
 
@@ -304,7 +311,6 @@ void Chat::sloNowaKonferencja()
                 zapytanie.next();
                 lista->push_back(zapytanie.value(0).toInt());
                 mapa->insert(this->oknoNowejKonferencji->getListaWybranych()->item(i)->text(), zapytanie.value(0).toInt());
-                qDebug() << "dupa1";
             }
         }
         bazaDanych.close();
@@ -312,8 +318,7 @@ void Chat::sloNowaKonferencja()
         QString nazwa = this->oknoNowejKonferencji->getNazwa() + " (" + QString::number(profil->getID()) + ")";
         konferencje.insert(nazwa, new OknoKonferencji(this, lista, nazwa, this->oknoNowejKonferencji->getListaWybranych(), profil, mapa, profil->getID()));
 
-        connect(konferencje[nazwa], SIGNAL(sigWysylanieWiadomosci(Wiadomosc*)), this, SLOT(sloWyslijWiadomosc(Wiadomosc*)));
-        qDebug() << "dupa2";
+        connect(konferencje[nazwa], SIGNAL(sigWysylanieWiadomosci(QByteArray*)), this->polaczenie, SLOT(sloWyslijWiadomosc(QByteArray*)));
         //connect(konferencje[nazwa], SIGNAL(sigWysylanieWiadomosci(Wiadomosc*)), this, SLOT(sloWyslijWiadomosc(Wiadomosc*)));
         connect(konferencje[nazwa], SIGNAL(dsgdfgdgdgsigZamkniecie(QString*)), this, SLOT(sloZamkniecie(QString*)));
     }
@@ -382,7 +387,7 @@ void Chat::sloOdbiorWiadomosciKonferencji(Wiadomosc* wiadomosc)
 
     konferencje[wiadomosc->getTresc()->at(0)]->sloOdbiorWiadomosci(wiadomosc);
 
-    connect(konferencje[wiadomosc->getTresc()->at(0)], SIGNAL(sigWysylanieWiadomosci(Wiadomosc*)), this, SLOT(sloWyslijWiadomosc(Wiadomosc*)));
+    connect(konferencje[wiadomosc->getTresc()->at(0)], SIGNAL(sigWysylanieWiadomosci(QByteArray*)), this->polaczenie, SLOT(sloWyslijWiadomosc(QByteArray*)));
     connect(konferencje[wiadomosc->getTresc()->at(0)], SIGNAL(sigZamkniecie(QString*)), this, SLOT(sloZamkniecie(QString*)));
 }
 

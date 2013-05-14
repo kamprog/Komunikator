@@ -14,7 +14,6 @@ public:
     QByteArray* Szyfruj(Klucz* klucz, QString* tresc);
     QString* Deszyfruj(Klucz* klucz, QByteArray* tresc);
     Klucz* GenerujKlucz(QByteArray*  klucz);
-    Klucz* getKlucz();
     static AES* instancja();
 };
 

@@ -62,28 +62,29 @@ QList<QString>* Wiadomosc::getTresc()
     return this->tresc;
 }
 
-QString Wiadomosc::getSerializeTresc()
+QString* Wiadomosc::getSerializeTresc()
 {
-    QString tresc = "";
+    QString* tresc = new QString();
+    (*tresc) = "";
 
-    tresc += QString::number(this->nadawca) += char(18);
+    (*tresc) += QString::number(this->nadawca) += char(18);
 
-    tresc += QString::number(this->nadawca) += char(18);
+    (*tresc) += QString::number(this->nadawca) += char(18);
 
     for(auto it = this->adresat->begin(); it != this->adresat->end(); ++it)
     {
-        tresc += QString::number(*it) += char(19);
+        (*tresc) += QString::number(*it) += char(19);
     }
-    tresc[tresc.length()-1] = char(18);
+    (*tresc)[(*tresc).length()-1] = char(18);
 
     for(auto it = this->tresc->begin(); it != this->tresc->end(); ++it)
     {
         //qDebug() << *it;
-        tresc += (QString)(*it) += char(19);
+        (*tresc) += (QString)(*it) += char(19);
     }
-    tresc[tresc.length()-1] = char(18);
+    (*tresc)[(*tresc).length()-1] = char(18);
 
-    tresc += QString::number(this->typ) += char(0);
+    (*tresc) += QString::number(this->typ) += char(0);
     return tresc;
 }
 
@@ -165,7 +166,6 @@ QByteArray* Wiadomosc::Szyfruj(Klucz* klucz)
 
 void Wiadomosc::Deszyfruj(QByteArray* tr, Klucz* klucz)
 {
-    qDebug() << *tr;
     QString* tresc = KonfiguracjaSzyfrowania::getSyfrSymetryczny()->Deszyfruj(klucz, tr);
     clear();
     QStringList listaSekcji = tresc->split(char(18));

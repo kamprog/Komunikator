@@ -4,7 +4,7 @@
 Uzytkownik::Uzytkownik(QTcpSocket* socket, int ID) {
     this->ID = ID;
     this->socket = socket;
-    this->kluczSymetryczny = KonfiguracjaSzyfrowania::getSyfrSymetryczny()->getKlucz();
+    this->kluczSymetryczny = &(*KonfiguracjaSzyfrowania::getSyfrSymetryczny()->getKlucz());
 
 }
 
@@ -23,7 +23,6 @@ void Uzytkownik::setKluczRSA(Klucz* kluczRSA) {
 }
 
 void Uzytkownik::setAES(Klucz* kluczDES) {
-    qDebug() << "dupa";
     this->kluczSymetryczny = kluczDES;
 }
 
@@ -48,7 +47,6 @@ Klucz* Uzytkownik::getRSA() {
 }
 
 Klucz* Uzytkownik::getAES() {
-    qDebug() << kluczSymetryczny;
     return kluczSymetryczny;
 }
 

@@ -2,7 +2,7 @@
 #include "TypSzyfrowania.h"
 
 TypSzyforwania KonfiguracjaSzyfrowania::SzyfrNiesymetryczny = TypSzyforwania::RSA;
-TypSzyforwania KonfiguracjaSzyfrowania::SzyfrSymetryczny = TypSzyforwania::Cezar;
+TypSzyforwania KonfiguracjaSzyfrowania::SzyfrSymetryczny = TypSzyforwania::AES;
 
 void KonfiguracjaSzyfrowania::setSzyfrSymetryczny(TypSzyforwania typ)
 {

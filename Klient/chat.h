@@ -25,6 +25,8 @@
 #include <QFileDialog>
 #include <QMutex>
 #include "listener.h"
+#include "../polaczenietcp.h"
+#include "../konfiguracjapolaczenia.h"
 
 
 namespace Ui {
@@ -91,6 +93,7 @@ private:
     QMap<QString, OknoKonferencji*> konferencje;
     QMutex* mutexSocket;
     Listener* listener;
+    Polaczenie* polaczenie;
 
 };
 

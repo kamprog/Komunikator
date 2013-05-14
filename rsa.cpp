@@ -18,12 +18,10 @@ QString* RSA::Deszyfruj(Klucz* klucz, QByteArray* tresc){
 }
 
 Klucz* RSA::GenerujKlucz(QByteArray*  klucz){
-    return new Klucz(TypKlucza::symetryczny);
+    this->klucz = new Klucz(TypKlucza::symetryczny);
+    return this->klucz;
 }
 
-Klucz* RSA::getKlucz(){
-    return new Klucz(TypKlucza::symetryczny);
-}
 
 RSA* RSA::instancja()
 {
