@@ -59,7 +59,6 @@ Wiadomosc* Profil::DodanieKontaktu(int ID, QString nick)
     kontakty.insert(ID, new Kontakt(ID, nick, Status(Niedostepny)));
 
     QString *str = new QString("");
-    // TODO: stworzyc wiadomosc sprawdzajaca jaki status ma nowo dodany kontakt
     return new Wiadomosc(this->ID, ID, new QString(""), TypWiadomosci(pytanieOStatus));
 }
 

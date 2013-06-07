@@ -30,7 +30,7 @@ WatekGlowny::WatekGlowny()  : QTcpServer() {
     this->bazaOczekujacych = QSqlDatabase::addDatabase("QMYSQL");
     this->bazaOczekujacych.setHostName("localhost");
     this->bazaOczekujacych.setUserName("root");
-    this->bazaOczekujacych.setPassword("");
+    this->bazaOczekujacych.setPassword("root");
     this->bazaOczekujacych.setDatabaseName("serwer");
 
     this->socketyUzytkownikow = new QMap<int, Uzytkownik*>;
